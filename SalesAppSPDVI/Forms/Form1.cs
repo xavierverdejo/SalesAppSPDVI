@@ -20,7 +20,7 @@ namespace SalesAppSPDVI
         int filmsPerPage;
         int numberOfPages;
         int currentPage = 0;
-        int totalProducts;
+        int totalProducts = 0;
 
         public Form1()
         {
@@ -29,11 +29,11 @@ namespace SalesAppSPDVI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            while(!AuthHelper.auth)
+            /*while(!AuthHelper.auth)
             {
                 AuthForm auth = new AuthForm(0);
                 auth.ShowDialog();
-            }
+            }*/
             onAuth();
         }
         private void onAuth()
@@ -42,6 +42,7 @@ namespace SalesAppSPDVI
             productsListView.View = View.Details;
 
             updateCategories();
+            updateSubCategories();
 
             ColumnHeader header = new ColumnHeader();
             header.Text = "";
@@ -51,10 +52,7 @@ namespace SalesAppSPDVI
             productsListView.Columns.Add(header);
 
             filmsPerPage = int.Parse(numberRowsBox.Text);
-            totalProducts = countAllProducts();
             label1.Text = $"{totalProducts} products";
-            refreshButtons();
-            refreshNumberOfPages();
 
             updateList();
         }
@@ -66,6 +64,14 @@ namespace SalesAppSPDVI
                 categoriesComboBox.Items.AddRange(products.ToArray());
             }
         }
+        private void updateSubCategories()
+        {
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            {
+                List<string> products = connection.Query<string>("dbo.getSubCategories").ToList();
+                subCategoriesComboBox.Items.AddRange(products.ToArray());
+            }
+        }
         private void numberRowsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             filmsPerPage = int.Parse(numberRowsBox.Text);
@@ -74,14 +80,6 @@ namespace SalesAppSPDVI
             refreshButtons();
 
             updateList();
-        }
-        int countAllProducts()
-        {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
-            {
-                int count = connection.ExecuteScalar<int>("SELECT COUNT(*) FROM [AdventureWorks2016].[Production].[Product]");
-                return count;
-            }
         }
         void refreshButtons()
         {
@@ -97,26 +95,47 @@ namespace SalesAppSPDVI
         }
         void refreshNumberOfPages()
         {
+            label1.Text = $"{totalProducts} products found";
             numberOfPages = (totalProducts / filmsPerPage);
-            label2.Text = $"{numberOfPages} pages";
+            label2.Text = $"{numberOfPages+1} pages";
             label3.Text = currentPage.ToString();
         }
-        void updateList()
-        {
+		void updateList()
+		{
+            refreshNumberOfPages();
+
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
-            {
-                products.Clear();
-                products = connection.Query<Product>("SELECT ProductID, Name, ProductNumber, Color, ProductModelID, Size FROM [AdventureWorks2016].[Production].[Product]" +
-                                                      $" ORDER BY ProductID OFFSET {currentPage * filmsPerPage} ROWS FETCH NEXT {filmsPerPage} ROWS ONLY").ToList();
+			{
+				products.Clear();
+                string queryCount = "SELECT COUNT(*) " +
+                                                     $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
+                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+
+                string query = "SELECT Production.ProductModel.Name AS ProductModel, Production.ProductDescription.Description, Production.Product.Name, Production.Product.ProductNumber, Production.Product.Color, Production.Product.ListPrice, Production.Product.Size, Production.Product.ProductLine, Production.Product.Class, Production.Product.Style, Production.ProductCategory.Name AS[ProductCategory], Production.ProductSubcategory.Name AS[ProductSubCategory] " +
+                                                     $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
+                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                if (categoriesComboBox.SelectedIndex != -1)
+                {
+                    query += $"AND Production.ProductCategory.Name = '{categoriesComboBox.Text}' ";
+                    queryCount+=$"AND Production.ProductCategory.Name = '{categoriesComboBox.Text}' ";
+                }
+
+                query+=$"ORDER BY Production.ProductModel.Name OFFSET {currentPage * filmsPerPage} ROWS FETCH NEXT {filmsPerPage} ROWS ONLY";
+
+                products = connection.Query<Product>(query).ToList();
+                totalProducts = connection.ExecuteScalar<int>(queryCount);
+
+                // $" ORDER BY ProductID OFFSET {currentPage * filmsPerPage} ROWS FETCH NEXT {filmsPerPage} ROWS ONLY"
 
                 productsListView.Items.Clear();
-                foreach (Product prod in products)
-                {
-                    productsListView.Items.Add(prod.ProductID.ToString(), prod.ToString(), 0);
-                }
-            }
+				foreach (Product prod in products)
+				{
+					productsListView.Items.Add(prod.ProductNumber, prod.Name, 0);
+				}
+			}
+            refreshNumberOfPages();
             refreshButtons();
-        }
+		}
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -134,13 +153,13 @@ namespace SalesAppSPDVI
 
         private void productsListView_DoubleClick(object sender, EventArgs e)
         {
-            int id = int.Parse(productsListView.SelectedItems[0].Name);
+            //int id = int.Parse(productsListView.SelectedItems[0].Name);
             //MessageBox.Show($"Product id -> {id}");
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
             {
-                List<Product> products = connection.Query<Product>("dbo.getProductById @ProductID", new { ProductID = id }).ToList();
+                //List<Product> products = connection.Query<Product>("dbo.getProductById @ProductID", new { ProductID = id }).ToList();
                 //MessageBox.Show(products[0].ToString());
-                ProductInfo pInfoForm = new ProductInfo(products[0]);
+                ProductInfo pInfoForm = new ProductInfo(products[productsListView.SelectedIndices[0]]);
                 pInfoForm.ShowDialog();
             }
         }
@@ -148,6 +167,11 @@ namespace SalesAppSPDVI
         private void productsListView_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void categoriesComboBox_SelectedIndexChanged(object sender, EventArgs e) 
+        {
+            updateList();
         }
     }
 }

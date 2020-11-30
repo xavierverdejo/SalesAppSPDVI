@@ -35,11 +35,12 @@ namespace SalesAppSPDVI
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(116, 206);
+            this.button1.Location = new System.Drawing.Point(115, 228);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 32);
@@ -50,7 +51,7 @@ namespace SalesAppSPDVI
             // 
             // userTextBox
             // 
-            this.userTextBox.Location = new System.Drawing.Point(98, 108);
+            this.userTextBox.Location = new System.Drawing.Point(97, 130);
             this.userTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.userTextBox.Name = "userTextBox";
             this.userTextBox.Size = new System.Drawing.Size(148, 24);
@@ -59,7 +60,7 @@ namespace SalesAppSPDVI
             // passTextBox
             // 
             this.passTextBox.AcceptsReturn = true;
-            this.passTextBox.Location = new System.Drawing.Point(98, 162);
+            this.passTextBox.Location = new System.Drawing.Point(97, 184);
             this.passTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.passTextBox.Name = "passTextBox";
             this.passTextBox.PasswordChar = '*';
@@ -69,7 +70,7 @@ namespace SalesAppSPDVI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(98, 88);
+            this.label1.Location = new System.Drawing.Point(97, 110);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 18);
             this.label1.TabIndex = 3;
@@ -78,7 +79,7 @@ namespace SalesAppSPDVI
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(98, 140);
+            this.label2.Location = new System.Drawing.Point(97, 162);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 18);
             this.label2.TabIndex = 4;
@@ -87,17 +88,28 @@ namespace SalesAppSPDVI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(58, 32);
+            this.label3.Location = new System.Drawing.Point(57, 54);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(251, 36);
             this.label3.TabIndex = 5;
             this.label3.Text = "Please, log in with your credentials to\r\n open de management application.";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(219, 301);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 26);
+            this.comboBox1.TabIndex = 6;
+            this.comboBox1.Text = "English";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // AuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 251);
+            this.ClientSize = new System.Drawing.Size(352, 339);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -124,5 +136,6 @@ namespace SalesAppSPDVI
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

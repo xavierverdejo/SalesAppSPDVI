@@ -22,7 +22,7 @@ namespace SalesAppSPDVI
         private void ProductInfo_Load(object sender, EventArgs e)
         {
             nameLabel.Text = lProduct.Name;
-            idTextBox.Text = lProduct.ProductID.ToString();
+            idTextBox.Text = lProduct.ProductNumber;
             nameTextBox.Text = lProduct.Name;
             colorTextBox.Text = lProduct.Color;
             sizeTextBox.Text = lProduct.Size;

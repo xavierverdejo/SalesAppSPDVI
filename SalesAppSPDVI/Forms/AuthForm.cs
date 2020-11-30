@@ -21,7 +21,8 @@ namespace SalesAppSPDVI
 
         private void AuthForm_Load(object sender, EventArgs e)
         {
-
+            comboBox1.Items.AddRange(LanguageHelper.langNames);
+            setLanguage();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,6 +40,20 @@ namespace SalesAppSPDVI
                 }
                 this.Close();
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LanguageHelper.lan = comboBox1.SelectedIndex;
+            setLanguage();
+        }
+
+        private void setLanguage()
+        {
+            label3.Text = LanguageHelper.langs[LanguageHelper.lan, 0];
+            label1.Text = LanguageHelper.langs[LanguageHelper.lan, 1];
+            label2.Text = LanguageHelper.langs[LanguageHelper.lan, 2];
+            button1.Text = LanguageHelper.langs[LanguageHelper.lan, 3];
         }
     }
 }

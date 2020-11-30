@@ -37,6 +37,7 @@ namespace SalesAppSPDVI
             this.button2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.productsListView = new System.Windows.Forms.ListView();
+            this.subCategoriesComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // categoriesComboBox
@@ -44,8 +45,10 @@ namespace SalesAppSPDVI
             this.categoriesComboBox.FormattingEnabled = true;
             this.categoriesComboBox.Location = new System.Drawing.Point(16, 12);
             this.categoriesComboBox.Name = "categoriesComboBox";
-            this.categoriesComboBox.Size = new System.Drawing.Size(121, 26);
+            this.categoriesComboBox.Size = new System.Drawing.Size(149, 26);
             this.categoriesComboBox.TabIndex = 8;
+            this.categoriesComboBox.Text = "Category";
+            this.categoriesComboBox.SelectedIndexChanged += new System.EventHandler(this.categoriesComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -53,9 +56,9 @@ namespace SalesAppSPDVI
             this.label1.Location = new System.Drawing.Point(13, 125);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 18);
+            this.label1.Size = new System.Drawing.Size(119, 18);
             this.label1.TabIndex = 1;
-            this.label1.Text = "0 films found";
+            this.label1.Text = "0 products found";
             // 
             // numberRowsBox
             // 
@@ -122,11 +125,21 @@ namespace SalesAppSPDVI
             this.productsListView.SelectedIndexChanged += new System.EventHandler(this.productsListView_SelectedIndexChanged);
             this.productsListView.DoubleClick += new System.EventHandler(this.productsListView_DoubleClick);
             // 
+            // subCategoriesComboBox
+            // 
+            this.subCategoriesComboBox.FormattingEnabled = true;
+            this.subCategoriesComboBox.Location = new System.Drawing.Point(193, 12);
+            this.subCategoriesComboBox.Name = "subCategoriesComboBox";
+            this.subCategoriesComboBox.Size = new System.Drawing.Size(149, 26);
+            this.subCategoriesComboBox.TabIndex = 9;
+            this.subCategoriesComboBox.Text = "Subcategory";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1165, 658);
+            this.Controls.Add(this.subCategoriesComboBox);
             this.Controls.Add(this.categoriesComboBox);
             this.Controls.Add(this.productsListView);
             this.Controls.Add(this.label3);
@@ -154,6 +167,7 @@ namespace SalesAppSPDVI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListView productsListView;
         private System.Windows.Forms.ComboBox categoriesComboBox;
+        private System.Windows.Forms.ComboBox subCategoriesComboBox;
     }
 }
 

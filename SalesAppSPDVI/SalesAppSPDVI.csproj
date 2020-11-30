@@ -89,7 +89,7 @@
     </Compile>
     <Compile Include="Helpers\AuthHelper.cs" />
     <Compile Include="Helpers\ConnectionHelper.cs" />
-    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Helpers\LanguageHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AuthForm.resx">
