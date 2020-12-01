@@ -39,19 +39,19 @@ namespace SalesAppSPDVI
             this.productsListView = new System.Windows.Forms.ListView();
             this.subCategoriesComboBox = new System.Windows.Forms.ComboBox();
             this.sizeComboBox = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.filteringGroupBox = new System.Windows.Forms.GroupBox();
+            this.sellEndDateCheckBox = new System.Windows.Forms.CheckBox();
             this.searchTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.searchLabel = new System.Windows.Forms.Label();
             this.maxComboBox = new System.Windows.Forms.ComboBox();
             this.minComboBox = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.andLabel = new System.Windows.Forms.Label();
+            this.priceBetweenLabel = new System.Windows.Forms.Label();
             this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.clearButton = new System.Windows.Forms.Button();
             this.classComboBox = new System.Windows.Forms.ComboBox();
             this.productLineComboBox = new System.Windows.Forms.ComboBox();
-            this.sellEndDateCheckBox = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
+            this.filteringGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // categoriesComboBox
@@ -137,7 +137,6 @@ namespace SalesAppSPDVI
             this.productsListView.Size = new System.Drawing.Size(1278, 519);
             this.productsListView.TabIndex = 7;
             this.productsListView.UseCompatibleStateImageBehavior = false;
-            this.productsListView.SelectedIndexChanged += new System.EventHandler(this.productsListView_SelectedIndexChanged);
             this.productsListView.DoubleClick += new System.EventHandler(this.productsListView_DoubleClick);
             // 
             // subCategoriesComboBox
@@ -160,28 +159,39 @@ namespace SalesAppSPDVI
             this.sizeComboBox.Text = "Size";
             this.sizeComboBox.SelectedIndexChanged += new System.EventHandler(this.sizeComboBox_SelectedIndexChanged);
             // 
-            // groupBox1
+            // filteringGroupBox
             // 
-            this.groupBox1.Controls.Add(this.sellEndDateCheckBox);
-            this.groupBox1.Controls.Add(this.searchTextBox);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.maxComboBox);
-            this.groupBox1.Controls.Add(this.minComboBox);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.styleComboBox);
-            this.groupBox1.Controls.Add(this.clearButton);
-            this.groupBox1.Controls.Add(this.classComboBox);
-            this.groupBox1.Controls.Add(this.productLineComboBox);
-            this.groupBox1.Controls.Add(this.categoriesComboBox);
-            this.groupBox1.Controls.Add(this.sizeComboBox);
-            this.groupBox1.Controls.Add(this.subCategoriesComboBox);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1278, 129);
-            this.groupBox1.TabIndex = 11;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Filtering";
+            this.filteringGroupBox.Controls.Add(this.sellEndDateCheckBox);
+            this.filteringGroupBox.Controls.Add(this.searchTextBox);
+            this.filteringGroupBox.Controls.Add(this.searchLabel);
+            this.filteringGroupBox.Controls.Add(this.maxComboBox);
+            this.filteringGroupBox.Controls.Add(this.minComboBox);
+            this.filteringGroupBox.Controls.Add(this.andLabel);
+            this.filteringGroupBox.Controls.Add(this.priceBetweenLabel);
+            this.filteringGroupBox.Controls.Add(this.styleComboBox);
+            this.filteringGroupBox.Controls.Add(this.clearButton);
+            this.filteringGroupBox.Controls.Add(this.classComboBox);
+            this.filteringGroupBox.Controls.Add(this.productLineComboBox);
+            this.filteringGroupBox.Controls.Add(this.categoriesComboBox);
+            this.filteringGroupBox.Controls.Add(this.sizeComboBox);
+            this.filteringGroupBox.Controls.Add(this.subCategoriesComboBox);
+            this.filteringGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.filteringGroupBox.Name = "filteringGroupBox";
+            this.filteringGroupBox.Size = new System.Drawing.Size(1278, 129);
+            this.filteringGroupBox.TabIndex = 11;
+            this.filteringGroupBox.TabStop = false;
+            this.filteringGroupBox.Text = "Filtering";
+            // 
+            // sellEndDateCheckBox
+            // 
+            this.sellEndDateCheckBox.AutoSize = true;
+            this.sellEndDateCheckBox.Location = new System.Drawing.Point(1066, 26);
+            this.sellEndDateCheckBox.Name = "sellEndDateCheckBox";
+            this.sellEndDateCheckBox.Size = new System.Drawing.Size(179, 22);
+            this.sellEndDateCheckBox.TabIndex = 23;
+            this.sellEndDateCheckBox.Text = "Only available products";
+            this.sellEndDateCheckBox.UseVisualStyleBackColor = true;
+            this.sellEndDateCheckBox.CheckedChanged += new System.EventHandler(this.sellEndDateCheckBox_CheckedChanged);
             // 
             // searchTextBox
             // 
@@ -191,14 +201,14 @@ namespace SalesAppSPDVI
             this.searchTextBox.TabIndex = 22;
             this.searchTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // label6
+            // searchLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 69);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 18);
-            this.label6.TabIndex = 21;
-            this.label6.Text = "Search";
+            this.searchLabel.AutoSize = true;
+            this.searchLabel.Location = new System.Drawing.Point(9, 69);
+            this.searchLabel.Name = "searchLabel";
+            this.searchLabel.Size = new System.Drawing.Size(55, 18);
+            this.searchLabel.TabIndex = 21;
+            this.searchLabel.Text = "Search";
             // 
             // maxComboBox
             // 
@@ -220,23 +230,23 @@ namespace SalesAppSPDVI
             this.minComboBox.Text = "Min";
             this.minComboBox.SelectedIndexChanged += new System.EventHandler(this.minComboBox_SelectedIndexChanged);
             // 
-            // label5
+            // andLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(934, 27);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 18);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "and";
+            this.andLabel.AutoSize = true;
+            this.andLabel.Location = new System.Drawing.Point(934, 27);
+            this.andLabel.Name = "andLabel";
+            this.andLabel.Size = new System.Drawing.Size(32, 18);
+            this.andLabel.TabIndex = 18;
+            this.andLabel.Text = "and";
             // 
-            // label4
+            // priceBetweenLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(762, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 18);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Price between";
+            this.priceBetweenLabel.AutoSize = true;
+            this.priceBetweenLabel.Location = new System.Drawing.Point(762, 27);
+            this.priceBetweenLabel.Name = "priceBetweenLabel";
+            this.priceBetweenLabel.Size = new System.Drawing.Size(101, 18);
+            this.priceBetweenLabel.TabIndex = 15;
+            this.priceBetweenLabel.Text = "Price between";
             // 
             // styleComboBox
             // 
@@ -250,9 +260,9 @@ namespace SalesAppSPDVI
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(1190, 90);
+            this.clearButton.Location = new System.Drawing.Point(1157, 90);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(82, 33);
+            this.clearButton.Size = new System.Drawing.Size(115, 33);
             this.clearButton.TabIndex = 13;
             this.clearButton.Text = "Clear all";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -278,23 +288,12 @@ namespace SalesAppSPDVI
             this.productLineComboBox.Text = "Product line";
             this.productLineComboBox.SelectedIndexChanged += new System.EventHandler(this.productLineComboBox_SelectedIndexChanged);
             // 
-            // sellEndDateCheckBox
-            // 
-            this.sellEndDateCheckBox.AutoSize = true;
-            this.sellEndDateCheckBox.Location = new System.Drawing.Point(1066, 26);
-            this.sellEndDateCheckBox.Name = "sellEndDateCheckBox";
-            this.sellEndDateCheckBox.Size = new System.Drawing.Size(179, 22);
-            this.sellEndDateCheckBox.TabIndex = 23;
-            this.sellEndDateCheckBox.Text = "Only available products";
-            this.sellEndDateCheckBox.UseVisualStyleBackColor = true;
-            this.sellEndDateCheckBox.CheckedChanged += new System.EventHandler(this.sellEndDateCheckBox_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1302, 758);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.filteringGroupBox);
             this.Controls.Add(this.productsListView);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
@@ -305,10 +304,10 @@ namespace SalesAppSPDVI
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "SPDVI Management Application";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.filteringGroupBox.ResumeLayout(false);
+            this.filteringGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -325,16 +324,16 @@ namespace SalesAppSPDVI
         private System.Windows.Forms.ComboBox categoriesComboBox;
         private System.Windows.Forms.ComboBox subCategoriesComboBox;
         private System.Windows.Forms.ComboBox sizeComboBox;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox filteringGroupBox;
         private System.Windows.Forms.ComboBox classComboBox;
         private System.Windows.Forms.ComboBox productLineComboBox;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.ComboBox styleComboBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label andLabel;
+        private System.Windows.Forms.Label priceBetweenLabel;
         private System.Windows.Forms.ComboBox maxComboBox;
         private System.Windows.Forms.ComboBox minComboBox;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label searchLabel;
         private System.Windows.Forms.TextBox searchTextBox;
         private System.Windows.Forms.CheckBox sellEndDateCheckBox;
     }

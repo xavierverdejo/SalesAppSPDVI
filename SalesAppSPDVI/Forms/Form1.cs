@@ -14,8 +14,7 @@ namespace SalesAppSPDVI
 {
     public partial class Form1 : Form
     {
-        // VARIABLES
-
+        #region VARIABLES
         List<Product> products = new List<Product>();
         List<string> sizes = new List<string>();
         List<string> productLines = new List<string>();
@@ -28,23 +27,25 @@ namespace SalesAppSPDVI
         int numberOfPages;
         int currentPage = 0;
         int totalProducts = 0;
-
+        #endregion
         public Form1()
         {
             InitializeComponent();
         }
 
+        #region FUNCTIONS
         private void Form1_Load(object sender, EventArgs e)
         {
-           /* while(!AuthHelper.auth)
+           while(!AuthHelper.auth)
             {
                 AuthForm auth = new AuthForm(0);
                 auth.ShowDialog();
-            }*/
+            }
             onAuth();
         }
         private void onAuth()
         {
+            setLanguage();
             updateCategories();
             updateSubCategories();
             setMinMax();
@@ -56,7 +57,6 @@ namespace SalesAppSPDVI
 
             updateList();
         }
-        
         private void updateHeader()
         {  
             productsListView.Scrollable = true;
@@ -109,15 +109,6 @@ namespace SalesAppSPDVI
             classComboBox.Items.Clear();
             styleComboBox.Items.Clear();
         }
-        private void numberRowsBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            filmsPerPage = int.Parse(numberRowsBox.Text);
-            currentPage = 0;
-            refreshNumberOfPages();
-            refreshButtons();
-
-            updateList();
-        }
         void refreshButtons()
         {
             if (currentPage != numberOfPages)
@@ -132,9 +123,9 @@ namespace SalesAppSPDVI
         }
         void refreshNumberOfPages()
         {
-            label1.Text = $"{totalProducts} products found";
+            label1.Text = $"{totalProducts}"+ LanguageHelper.dict[LanguageHelper.lan + ".main.products_found"]; ;
             numberOfPages = (totalProducts / filmsPerPage);
-            label2.Text = $"{numberOfPages+1} pages";
+            label2.Text = $"{numberOfPages+1}"+ LanguageHelper.dict[LanguageHelper.lan + ".main.pages"]; ;
             label3.Text = currentPage.ToString();
         }
         private void setMinMax()
@@ -145,7 +136,7 @@ namespace SalesAppSPDVI
 		void updateList()
 		{
             filmsPerPage = int.Parse(numberRowsBox.Text);
-            label1.Text = $"{totalProducts} products";
+            label1.Text = $"{totalProducts}"+LanguageHelper.dict[LanguageHelper.lan + ".main.products_found"];
             refreshNumberOfPages();
 
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
@@ -156,19 +147,19 @@ namespace SalesAppSPDVI
                                                      $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
                 string query = "SELECT Production.ProductModel.Name AS ProductModel, Production.ProductDescription.Description, Production.Product.Name, Production.Product.ProductNumber, Production.Product.Color, Production.Product.ListPrice, Production.Product.Size, Production.Product.ProductLine, Production.Product.Class, Production.Product.Style, Production.ProductCategory.Name AS[ProductCategory], Production.ProductSubcategory.Name AS[ProductSubCategory] " +
                                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
                 string querySizes = "SELECT Production.Product.Size " +
                                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
                 string queryProductLines = "SELECT Production.Product.ProductLine " +
                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
                 string queryClass = "SELECT Production.Product.Class " +
                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
                 string queryStyle = "SELECT Production.Product.Style " +
                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
+                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
 
                 if (categoriesComboBox.SelectedIndex != -1)
                 {
@@ -286,21 +277,63 @@ namespace SalesAppSPDVI
             refreshNumberOfPages();
             refreshButtons();
 		}
+        private void setLanguage()
+        {
+            currentPage = 0;
+            filteringGroupBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.filtering"];
+            priceBetweenLabel.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.price_between"];
+            andLabel.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.and"];
+            clearButton.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.clear_all"];
+            this.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.title"];
+            searchLabel.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.search"];
+            button1.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.previous"];
+            button2.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.next"];
 
+
+            categoriesComboBox.SelectedIndex = -1;
+            categoriesComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.category"];
+            subCategoriesComboBox.SelectedIndex = -1;
+            subCategoriesComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.subcategory"];
+            sizeComboBox.SelectedIndex = -1;
+            sizeComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.size"];
+            productLineComboBox.SelectedIndex = -1;
+            productLineComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.productline"];
+            classComboBox.SelectedIndex = -1;
+            classComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.class"];
+            styleComboBox.SelectedIndex = -1;
+            styleComboBox.Text = LanguageHelper.dict[LanguageHelper.lan + ".main.style"];
+            minComboBox.SelectedIndex = -1;
+            minComboBox.Text = "Min";
+            maxComboBox.SelectedIndex = -1;
+            maxComboBox.Text = "Max";
+            maxComboBox.BackColor = Color.White;
+            searchTextBox.Text = "";
+            sellEndDateCheckBox.Checked = false;
+        }
+        #endregion
+
+        #region HANDLERS
+        private void numberRowsBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filmsPerPage = int.Parse(numberRowsBox.Text);
+            currentPage = 0;
+            refreshNumberOfPages();
+            refreshButtons();
+
+            updateList();
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             currentPage++;
             refreshNumberOfPages();
             updateList();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             currentPage--;
             refreshNumberOfPages();
             updateList();
         }
-
         private void productsListView_DoubleClick(object sender, EventArgs e)
         {
             //int id = int.Parse(productsListView.SelectedItems[0].Name);
@@ -313,12 +346,6 @@ namespace SalesAppSPDVI
                 pInfoForm.ShowDialog();
             }
         }
-
-        private void productsListView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void categoriesComboBox_SelectedIndexChanged(object sender, EventArgs e) 
         {
             currentPage = 0;
@@ -327,63 +354,37 @@ namespace SalesAppSPDVI
             updateList();
             updateSubCategories();
         }
-
         private void subCategoriesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             clearSecondaryFilters();
             updateList();
         }
-
         private void sizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             updateList();
         }
-
         private void productLineComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             updateList();
         }
-
         private void clearButton_Click(object sender, EventArgs e)
         {
-            currentPage = 0;
-            categoriesComboBox.SelectedIndex = -1;
-            categoriesComboBox.Text = "Category";
-            subCategoriesComboBox.SelectedIndex = -1;
-            subCategoriesComboBox.Text = "Subcategory";
-            sizeComboBox.SelectedIndex = -1;
-            sizeComboBox.Text = "Size";
-            productLineComboBox.SelectedIndex = -1;
-            productLineComboBox.Text = "Product line";
-            classComboBox.SelectedIndex = -1;
-            classComboBox.Text = "Class";
-            styleComboBox.SelectedIndex = -1;
-            styleComboBox.Text = "Style";
-            minComboBox.SelectedIndex = -1;
-            minComboBox.Text = "Min";
-            maxComboBox.SelectedIndex = -1;
-            maxComboBox.Text = "Max";
-            maxComboBox.BackColor = Color.White;
-            searchTextBox.Text = "";
-            sellEndDateCheckBox.Checked = false;
+            setLanguage();
             updateList();
         }
-
         private void classComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             updateList();
         }
-
         private void styleComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             updateList();
         }
-
         private void maxComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             maxComboBox.BackColor = Color.White;
@@ -394,13 +395,13 @@ namespace SalesAppSPDVI
             currentPage = 0;
             updateList();
         }
-
         private void sellEndDateCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             currentPage = 0;
             updateList();
-        }
 
+            // SELECT DATES NOT IMPLEMENTED YET, SO NOT ADDED THE COLUMNS TO SHOW THAT  ------------->  TO-DO
+        }
         private void minComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentPage = 0;
@@ -412,6 +413,6 @@ namespace SalesAppSPDVI
                     maxComboBox.Items.Add(i.ToString());
             }
         }
-        
+        #endregion
     }
 }

@@ -97,6 +97,9 @@ namespace SalesAppSPDVI
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "English",
+            "French (BETA)"});
             this.comboBox1.Location = new System.Drawing.Point(219, 301);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 26);
