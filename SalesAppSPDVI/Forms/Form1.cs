@@ -64,19 +64,19 @@ namespace SalesAppSPDVI
             ColumnHeader header = new ColumnHeader();
             header.Text = "Name";
             header.Name = "col1";
-            header.Width = productsListView.Width/3;
+            header.Width = productsListView.Width/6;
             //productsListView.HeaderStyle = ColumnHeaderStyle.None;
             productsListView.Columns.Add(header);
             ColumnHeader header2 = new ColumnHeader();
             header2.Text = "Description";
             header2.Name = "col2";
-            header2.Width = productsListView.Width / 3;
+            header2.Width = 4*(productsListView.Width/6);
             //productsListView.HeaderStyle = ColumnHeaderStyle.None;
             productsListView.Columns.Add(header2);
             ColumnHeader header3 = new ColumnHeader();
-            header3.Text = "ProductLine";
+            header3.Text = "Price";
             header3.Name = "col3";
-            header3.Width = productsListView.Width / 3;
+            header3.Width = productsListView.Width / 4;
             //productsListView.HeaderStyle = ColumnHeaderStyle.None;
             productsListView.Columns.Add(header3);
         }
@@ -230,6 +230,17 @@ namespace SalesAppSPDVI
                     query += $"AND Production.Product.ListPrice BETWEEN {int.Parse(minComboBox.Text)} AND {int.Parse(maxComboBox.Text)} ";
                     queryCount += $"AND Production.Product.ListPrice BETWEEN {int.Parse(minComboBox.Text)} AND {int.Parse(maxComboBox.Text)} ";
                 }
+                if (searchTextBox.TextLength > 1)
+                {
+                    query += $"AND (Production.Product.Name LIKE '%{searchTextBox.Text}%' OR Production.ProductModel.Name LIKE '%{searchTextBox.Text}%') ";
+                    queryCount += $"AND (Production.Product.Name LIKE '%{searchTextBox.Text}%' OR Production.ProductModel.Name LIKE '%{searchTextBox.Text}%') ";
+                }
+                if(sellEndDateCheckBox.Checked)
+                {
+                    query += $"AND Production.Product.SellEndDate IS NULL ";
+                    queryCount += $"AND Production.Product.SellEndDate IS NULL ";
+
+                }
 
                 query +=$"ORDER BY Production.ProductModel.Name OFFSET {currentPage * filmsPerPage} ROWS FETCH NEXT {filmsPerPage} ROWS ONLY";
 
@@ -310,6 +321,7 @@ namespace SalesAppSPDVI
 
         private void categoriesComboBox_SelectedIndexChanged(object sender, EventArgs e) 
         {
+            currentPage = 0;
             clearSecondaryFilters();
             subCategoriesComboBox.SelectedIndex = -1;
             updateList();
@@ -318,22 +330,26 @@ namespace SalesAppSPDVI
 
         private void subCategoriesComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             clearSecondaryFilters();
             updateList();
         }
 
         private void sizeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             updateList();
         }
 
         private void productLineComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             updateList();
         }
 
         private void clearButton_Click(object sender, EventArgs e)
         {
+            currentPage = 0;
             categoriesComboBox.SelectedIndex = -1;
             categoriesComboBox.Text = "Category";
             subCategoriesComboBox.SelectedIndex = -1;
@@ -351,16 +367,20 @@ namespace SalesAppSPDVI
             maxComboBox.SelectedIndex = -1;
             maxComboBox.Text = "Max";
             maxComboBox.BackColor = Color.White;
+            searchTextBox.Text = "";
+            sellEndDateCheckBox.Checked = false;
             updateList();
         }
 
         private void classComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             updateList();
         }
 
         private void styleComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             updateList();
         }
 
@@ -369,9 +389,21 @@ namespace SalesAppSPDVI
             maxComboBox.BackColor = Color.White;
             updateList();
         }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            currentPage = 0;
+            updateList();
+        }
+
+        private void sellEndDateCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            currentPage = 0;
+            updateList();
+        }
 
         private void minComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currentPage = 0;
             maxComboBox.BackColor = Color.LightCoral;
             maxComboBox.Items.Clear();
             foreach (int i in maxArray)
