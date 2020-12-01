@@ -38,12 +38,23 @@ namespace SalesAppSPDVI
             this.label3 = new System.Windows.Forms.Label();
             this.productsListView = new System.Windows.Forms.ListView();
             this.subCategoriesComboBox = new System.Windows.Forms.ComboBox();
+            this.sizeComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.styleComboBox = new System.Windows.Forms.ComboBox();
+            this.clearButton = new System.Windows.Forms.Button();
+            this.classComboBox = new System.Windows.Forms.ComboBox();
+            this.productLineComboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.minComboBox = new System.Windows.Forms.ComboBox();
+            this.maxComboBox = new System.Windows.Forms.ComboBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // categoriesComboBox
             // 
             this.categoriesComboBox.FormattingEnabled = true;
-            this.categoriesComboBox.Location = new System.Drawing.Point(16, 12);
+            this.categoriesComboBox.Location = new System.Drawing.Point(8, 23);
             this.categoriesComboBox.Name = "categoriesComboBox";
             this.categoriesComboBox.Size = new System.Drawing.Size(149, 26);
             this.categoriesComboBox.TabIndex = 8;
@@ -67,7 +78,7 @@ namespace SalesAppSPDVI
             "20",
             "40",
             "60"});
-            this.numberRowsBox.Location = new System.Drawing.Point(1032, 122);
+            this.numberRowsBox.Location = new System.Drawing.Point(1169, 121);
             this.numberRowsBox.Name = "numberRowsBox";
             this.numberRowsBox.Size = new System.Drawing.Size(121, 26);
             this.numberRowsBox.TabIndex = 2;
@@ -77,7 +88,7 @@ namespace SalesAppSPDVI
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(551, 125);
+            this.label2.Location = new System.Drawing.Point(612, 125);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 18);
@@ -86,7 +97,7 @@ namespace SalesAppSPDVI
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(444, 615);
+            this.button1.Location = new System.Drawing.Point(515, 715);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 31);
             this.button1.TabIndex = 4;
@@ -96,7 +107,7 @@ namespace SalesAppSPDVI
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(621, 615);
+            this.button2.Location = new System.Drawing.Point(692, 715);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(85, 31);
             this.button2.TabIndex = 5;
@@ -107,7 +118,7 @@ namespace SalesAppSPDVI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(551, 621);
+            this.label3.Location = new System.Drawing.Point(622, 721);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 18);
             this.label3.TabIndex = 6;
@@ -119,7 +130,7 @@ namespace SalesAppSPDVI
             this.productsListView.Location = new System.Drawing.Point(12, 157);
             this.productsListView.MultiSelect = false;
             this.productsListView.Name = "productsListView";
-            this.productsListView.Size = new System.Drawing.Size(1141, 452);
+            this.productsListView.Size = new System.Drawing.Size(1278, 540);
             this.productsListView.TabIndex = 7;
             this.productsListView.UseCompatibleStateImageBehavior = false;
             this.productsListView.SelectedIndexChanged += new System.EventHandler(this.productsListView_SelectedIndexChanged);
@@ -128,19 +139,127 @@ namespace SalesAppSPDVI
             // subCategoriesComboBox
             // 
             this.subCategoriesComboBox.FormattingEnabled = true;
-            this.subCategoriesComboBox.Location = new System.Drawing.Point(193, 12);
+            this.subCategoriesComboBox.Location = new System.Drawing.Point(185, 23);
             this.subCategoriesComboBox.Name = "subCategoriesComboBox";
             this.subCategoriesComboBox.Size = new System.Drawing.Size(149, 26);
             this.subCategoriesComboBox.TabIndex = 9;
             this.subCategoriesComboBox.Text = "Subcategory";
+            this.subCategoriesComboBox.SelectedIndexChanged += new System.EventHandler(this.subCategoriesComboBox_SelectedIndexChanged);
+            // 
+            // sizeComboBox
+            // 
+            this.sizeComboBox.FormattingEnabled = true;
+            this.sizeComboBox.Location = new System.Drawing.Point(358, 23);
+            this.sizeComboBox.Name = "sizeComboBox";
+            this.sizeComboBox.Size = new System.Drawing.Size(63, 26);
+            this.sizeComboBox.TabIndex = 10;
+            this.sizeComboBox.Text = "Size";
+            this.sizeComboBox.SelectedIndexChanged += new System.EventHandler(this.sizeComboBox_SelectedIndexChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.maxComboBox);
+            this.groupBox1.Controls.Add(this.minComboBox);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.styleComboBox);
+            this.groupBox1.Controls.Add(this.clearButton);
+            this.groupBox1.Controls.Add(this.classComboBox);
+            this.groupBox1.Controls.Add(this.productLineComboBox);
+            this.groupBox1.Controls.Add(this.categoriesComboBox);
+            this.groupBox1.Controls.Add(this.sizeComboBox);
+            this.groupBox1.Controls.Add(this.subCategoriesComboBox);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1278, 100);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filtering";
+            // 
+            // styleComboBox
+            // 
+            this.styleComboBox.FormattingEnabled = true;
+            this.styleComboBox.Location = new System.Drawing.Point(647, 23);
+            this.styleComboBox.Name = "styleComboBox";
+            this.styleComboBox.Size = new System.Drawing.Size(72, 26);
+            this.styleComboBox.TabIndex = 14;
+            this.styleComboBox.Text = "Style";
+            this.styleComboBox.SelectedIndexChanged += new System.EventHandler(this.styleComboBox_SelectedIndexChanged);
+            // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(1190, 61);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(82, 33);
+            this.clearButton.TabIndex = 13;
+            this.clearButton.Text = "Clear all";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            // 
+            // classComboBox
+            // 
+            this.classComboBox.FormattingEnabled = true;
+            this.classComboBox.Location = new System.Drawing.Point(563, 23);
+            this.classComboBox.Name = "classComboBox";
+            this.classComboBox.Size = new System.Drawing.Size(72, 26);
+            this.classComboBox.TabIndex = 12;
+            this.classComboBox.Text = "Class";
+            this.classComboBox.SelectedIndexChanged += new System.EventHandler(this.classComboBox_SelectedIndexChanged);
+            // 
+            // productLineComboBox
+            // 
+            this.productLineComboBox.FormattingEnabled = true;
+            this.productLineComboBox.Location = new System.Drawing.Point(437, 23);
+            this.productLineComboBox.Name = "productLineComboBox";
+            this.productLineComboBox.Size = new System.Drawing.Size(111, 26);
+            this.productLineComboBox.TabIndex = 11;
+            this.productLineComboBox.Text = "Product line";
+            this.productLineComboBox.SelectedIndexChanged += new System.EventHandler(this.productLineComboBox_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(762, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(101, 18);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Price between";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(934, 27);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 18);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "and";
+            // 
+            // minComboBox
+            // 
+            this.minComboBox.FormattingEnabled = true;
+            this.minComboBox.Location = new System.Drawing.Point(867, 25);
+            this.minComboBox.Name = "minComboBox";
+            this.minComboBox.Size = new System.Drawing.Size(63, 26);
+            this.minComboBox.TabIndex = 19;
+            this.minComboBox.Text = "Min";
+            this.minComboBox.SelectedIndexChanged += new System.EventHandler(this.minComboBox_SelectedIndexChanged);
+            // 
+            // maxComboBox
+            // 
+            this.maxComboBox.FormattingEnabled = true;
+            this.maxComboBox.Location = new System.Drawing.Point(970, 25);
+            this.maxComboBox.Name = "maxComboBox";
+            this.maxComboBox.Size = new System.Drawing.Size(63, 26);
+            this.maxComboBox.TabIndex = 20;
+            this.maxComboBox.Text = "Max";
+            this.maxComboBox.SelectedIndexChanged += new System.EventHandler(this.maxComboBox_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1165, 658);
-            this.Controls.Add(this.subCategoriesComboBox);
-            this.Controls.Add(this.categoriesComboBox);
+            this.ClientSize = new System.Drawing.Size(1302, 758);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.productsListView);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
@@ -153,6 +272,8 @@ namespace SalesAppSPDVI
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,6 +289,16 @@ namespace SalesAppSPDVI
         private System.Windows.Forms.ListView productsListView;
         private System.Windows.Forms.ComboBox categoriesComboBox;
         private System.Windows.Forms.ComboBox subCategoriesComboBox;
+        private System.Windows.Forms.ComboBox sizeComboBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox classComboBox;
+        private System.Windows.Forms.ComboBox productLineComboBox;
+        private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.ComboBox styleComboBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox maxComboBox;
+        private System.Windows.Forms.ComboBox minComboBox;
     }
 }
 
