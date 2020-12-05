@@ -9,7 +9,8 @@ namespace SalesAppSPDVI.Helpers
 {
     class ConnectionHelper
     {
-        public static string selectedSQL;
+        public static string selectedSQL = "Sample";
+        public static string[] stringNames = new string[] {"Sample", "Azure"};
         public static string cnnVal()
         {
             return ConfigurationManager.ConnectionStrings[selectedSQL].ConnectionString;

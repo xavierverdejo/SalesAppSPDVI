@@ -22,7 +22,7 @@ namespace SalesAppSPDVI
         {
             InitializeComponent();
             this.lProduct = p;
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
             {
                 p.Products.Clear();
                 string query = "SELECT Production.ProductModel.Name AS ProductModel, Production.ProductDescription.Description, Production.Product.Name, Production.Product.ProductNumber, Production.Product.Color, Production.Product.ListPrice, Production.Product.Size, Production.Product.ProductLine, Production.Product.Class, Production.Product.Style, Production.ProductCategory.Name AS[ProductCategory], Production.ProductSubcategory.Name AS[ProductSubCategory] " +
@@ -53,13 +53,7 @@ namespace SalesAppSPDVI
 
         private void modifyButtom_Click(object sender, EventArgs e)
         {
-            AuthHelper.modifyAuth = false;
-            AuthForm auth = new AuthForm(1);
-            auth.ShowDialog();
-            if (AuthHelper.modifyAuth)
-                modifySet();
-            else
-                MessageBox.Show("You don't have the credentials to modify this items.");
+            modifySet();
         }
         private void modifySet()
         {
@@ -72,7 +66,7 @@ namespace SalesAppSPDVI
         }
         private void save()
         {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
             {
                 string query = $"SELECT ProductDescriptionID FROM Production.ProductModelProductDescriptionCulture WHERE ProductModelID = {lProduct.ProductModelID} AND CultureID = '{LanguageHelper.lan}'";
                 int descId = connection.ExecuteScalar<int>(query);

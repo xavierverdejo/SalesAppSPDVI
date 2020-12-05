@@ -38,7 +38,7 @@ namespace SalesAppSPDVI
         {
            while(!AuthHelper.auth)
             {
-                AuthForm auth = new AuthForm(0);
+                AuthForm auth = new AuthForm();
                 auth.ShowDialog();
             }
             onAuth();
@@ -82,7 +82,7 @@ namespace SalesAppSPDVI
         }
         private void updateCategories()
         {
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
             {
                 List<string> products = connection.Query<string>("dbo.getCategories").ToList();
                 categoriesComboBox.Items.AddRange(products.ToArray());
@@ -92,7 +92,7 @@ namespace SalesAppSPDVI
         {
             if (categoriesComboBox.SelectedItem != null)
             {
-                using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+                using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
                 {
                     subCategoriesComboBox.Items.Clear();
                     subCategoriesComboBox.Text = "Subcategory";
@@ -139,7 +139,7 @@ namespace SalesAppSPDVI
             label1.Text = $"{totalProducts}"+LanguageHelper.dict[LanguageHelper.lan + ".main.products_found"];
             refreshNumberOfPages();
 
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
 			{
 				products.Clear();
                 string queryCount = "SELECT COUNT(DISTINCT Production.ProductModel.Name) " +
@@ -337,7 +337,7 @@ namespace SalesAppSPDVI
         {
             //int id = int.Parse(productsListView.SelectedItems[0].Name);
             //MessageBox.Show($"Product id -> {id}");
-            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
+            using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal()))
             {
                 //List<Product> products = connection.Query<Product>("dbo.getProductById @ProductID", new { ProductID = id }).ToList();
                 //MessageBox.Show(products[0].ToString());

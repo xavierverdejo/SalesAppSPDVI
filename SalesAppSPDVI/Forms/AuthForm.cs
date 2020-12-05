@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SalesAppSPDVI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,11 +13,9 @@ namespace SalesAppSPDVI
 {
     public partial class AuthForm : Form
     {
-        private int typeAuth;
-        public AuthForm(int type)
+        public AuthForm()
         {
             InitializeComponent();
-            this.typeAuth = type;
         }
 
         private void AuthForm_Load(object sender, EventArgs e)
@@ -27,16 +26,8 @@ namespace SalesAppSPDVI
         private void button1_Click(object sender, EventArgs e)
         {
             if (userTextBox.Text.Equals("") && passTextBox.Text.Equals(""))
-            {
-                switch (this.typeAuth)
-                {
-                    case 0:
-                        AuthHelper.auth = true;
-                        break;
-                    case 1:
-                        AuthHelper.modifyAuth = true;
-                        break;
-                }
+            { 
+                AuthHelper.auth = true;
                 this.Close();
             }
         }
@@ -53,6 +44,11 @@ namespace SalesAppSPDVI
             label1.Text = LanguageHelper.dict[LanguageHelper.lan + ".login.user"];
             label2.Text = LanguageHelper.dict[LanguageHelper.lan + ".login.password"];
             button1.Text = LanguageHelper.dict[LanguageHelper.lan + ".login.login"];
+        }
+
+        private void sqlTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ConnectionHelper.selectedSQL = ConnectionHelper.stringNames[sqlTypeComboBox.SelectedIndex];
         }
     }
 }
