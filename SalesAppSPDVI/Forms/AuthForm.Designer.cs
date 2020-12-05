@@ -88,11 +88,12 @@ namespace SalesAppSPDVI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(57, 54);
+            this.label3.Location = new System.Drawing.Point(45, 35);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(251, 36);
             this.label3.TabIndex = 5;
             this.label3.Text = "Please, log in with your credentials to\r\n open de management application.";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // comboBox1
             // 

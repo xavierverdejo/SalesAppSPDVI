@@ -15,7 +15,7 @@ namespace SalesAppSPDVI
     public partial class Form1 : Form
     {
         #region VARIABLES
-        List<Product> products = new List<Product>();
+        List<ProductModel> products = new List<ProductModel>();
         List<string> sizes = new List<string>();
         List<string> productLines = new List<string>();
         List<string> classes = new List<string>();
@@ -142,22 +142,22 @@ namespace SalesAppSPDVI
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(ConnectionHelper.cnnVal("Sample")))
 			{
 				products.Clear();
-                string queryCount = "SELECT COUNT(*) " +
-                                                     $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
-                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = 'en' AND Product.ProductModelID IS NOT NULL ";
-                string query = "SELECT Production.ProductModel.Name AS ProductModel, Production.ProductDescription.Description, Production.Product.Name, Production.Product.ProductNumber, Production.Product.Color, Production.Product.ListPrice, Production.Product.Size, Production.Product.ProductLine, Production.Product.Class, Production.Product.Style, Production.ProductCategory.Name AS[ProductCategory], Production.ProductSubcategory.Name AS[ProductSubCategory] " +
+                string queryCount = "SELECT COUNT(DISTINCT Production.ProductModel.Name) " +
                                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
                                                      $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
-                string querySizes = "SELECT Production.Product.Size " +
+                string query = "SELECT DISTINCT Production.ProductModel.ProductModelID, Production.ProductModel.Name AS ProductModelName, Production.ProductDescription.Description " +
                                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
                                                      $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
-                string queryProductLines = "SELECT Production.Product.ProductLine " +
+                string querySizes = "SELECT DISTINCT Production.Product.Size " +
+                                                     $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
+                                                     $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
+                string queryProductLines = "SELECT DISTINCT Production.Product.ProductLine " +
                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
                                      $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
-                string queryClass = "SELECT Production.Product.Class " +
+                string queryClass = "SELECT DISTINCT Production.Product.Class " +
                                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
                                      $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
-                string queryStyle = "SELECT Production.Product.Style " +
+                string queryStyle = "SELECT DISTINCT Production.Product.Style " +
                      $"FROM Production.Product INNER JOIN Production.ProductSubcategory ON Production.Product.ProductSubcategoryID = Production.ProductSubcategory.ProductSubcategoryID INNER JOIN Production.ProductCategory ON Production.ProductSubcategory.ProductCategoryID = Production.ProductCategory.ProductCategoryID INNER JOIN Production.ProductModel ON Production.Product.ProductModelID = Production.ProductModel.ProductModelID INNER JOIN Production.ProductModelProductDescriptionCulture ON Production.ProductModel.ProductModelID = Production.ProductModelProductDescriptionCulture.ProductModelID  INNER JOIN Production.ProductDescription ON Production.ProductModelProductDescriptionCulture.ProductDescriptionID = Production.ProductDescription.ProductDescriptionID " +
                      $"WHERE ProductModelProductDescriptionCulture.CultureID = '{LanguageHelper.lan}' AND Product.ProductModelID IS NOT NULL ";
 
@@ -235,8 +235,8 @@ namespace SalesAppSPDVI
 
                 query +=$"ORDER BY Production.ProductModel.Name OFFSET {currentPage * filmsPerPage} ROWS FETCH NEXT {filmsPerPage} ROWS ONLY";
 
-                products = connection.Query<Product>(query).ToList();
-                totalProducts = connection.ExecuteScalar<int>(queryCount);
+                products = connection.Query<ProductModel>(query).ToList();
+                //totalProducts = connection.ExecuteScalar<int>(queryCount);
                 sizes = connection.Query<string>(querySizes).ToList();
                 productLines = connection.Query<string>(queryProductLines).ToList();
                 classes = connection.Query<string>(queryClass).ToList();
@@ -265,15 +265,14 @@ namespace SalesAppSPDVI
                     if (style != null && !styleComboBox.Items.Contains(style))
                         styleComboBox.Items.Add(style);
                 }
-                foreach (Product prod in products)
-				{
-                    ListViewItem item = new ListViewItem(prod.Name);
+                foreach (ProductModel prod in products)
+				{                    
+                    ListViewItem item = new ListViewItem(prod.ProductModelName);
                     item.SubItems.Add(prod.Description);
-                    item.SubItems.Add(prod.ListPrice);
                     productsListView.Items.Add(item);
                 }
-                
-			}
+                totalProducts = connection.ExecuteScalar<int>(queryCount);
+            }
             refreshNumberOfPages();
             refreshButtons();
 		}

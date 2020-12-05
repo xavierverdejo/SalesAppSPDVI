@@ -9,9 +9,10 @@ namespace SalesAppSPDVI.Helpers
 {
     class ConnectionHelper
     {
-        public static string cnnVal(string name)
+        public static string selectedSQL;
+        public static string cnnVal()
         {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            return ConfigurationManager.ConnectionStrings[selectedSQL].ConnectionString;
         }
 
     }
